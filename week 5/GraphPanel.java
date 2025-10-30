@@ -205,15 +205,31 @@ public class GraphPanel extends JComponent {
             this.insertVal = insertVal; 
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
-        	
-        	Integer valToInsert = Integer.valueOf(insertVal.getText().trim());
-        	insertionsInOrder.add(valToInsert);
-        	
-        	myTree.insert(valToInsert);
-        	myTree.computeNodePositions();
-
-            repaint();
+        	try {
+        		String inputText = insertVal.getText().trim();
+        		if (inputText.isEmpty()) {
+        			return; // Don't insert empty values
+        		}
+        		
+        		Integer valToInsert = Integer.valueOf(inputText);
+        		insertionsInOrder.add(valToInsert);
+        		
+        		myTree.insert(valToInsert);
+        		myTree.computeNodePositions();
+        		
+        		// Clear the input field after successful insertion
+        		insertVal.setText("");
+        		
+        		repaint();
+        	} catch (NumberFormatException ex) {
+        		// Handle invalid input
+        		JOptionPane.showMessageDialog(GraphPanel.this, 
+        			"Please enter a valid integer value.", 
+        			"Invalid Input", 
+        			JOptionPane.ERROR_MESSAGE);
+        	}
         }       	
     }
     
@@ -223,12 +239,13 @@ public class GraphPanel extends JComponent {
             super(name);
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
-        	
         	myTree.root = null;
         	myTree.myRoot = null;
             nodes.clear();
             edges.clear();
+            insertionsInOrder.clear();
             repaint();
         }
     }
@@ -256,8 +273,10 @@ public class GraphPanel extends JComponent {
             super(name);
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
-            JComboBox combo = (JComboBox) e.getSource();
+            @SuppressWarnings("unchecked")
+            JComboBox<Kind> combo = (JComboBox<Kind>) e.getSource();
             kind = (Kind) combo.getSelectedItem();
             DisplayNode.updateKind(nodes, kind);
             repaint();
@@ -676,3 +695,5 @@ public class GraphPanel extends JComponent {
                 }
                 
             }*/
+    }
+}

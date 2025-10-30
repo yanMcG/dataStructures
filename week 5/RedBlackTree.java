@@ -276,9 +276,19 @@ public class RedBlackTree<T extends Comparable<T>> {
 	 if (subTreeRoot == null || subTreeRoot.right == null) {
 		 return subTreeRoot; // Cannot perform rotation
 	 }
+	 
 	 Node pivot = subTreeRoot.right;
+	 
+	 // Update parent pointers
 	 subTreeRoot.right = pivot.left;
+	 if (pivot.left != null) {
+		 pivot.left.parent = subTreeRoot;
+	 }
+	 
 	 pivot.left = subTreeRoot;
+	 pivot.parent = subTreeRoot.parent;
+	 subTreeRoot.parent = pivot;
+	 
 	 return pivot;
  }
 
@@ -287,62 +297,107 @@ public class RedBlackTree<T extends Comparable<T>> {
 	 if (subTreeRoot == null || subTreeRoot.left == null) {
 		 return subTreeRoot; // Cannot perform rotation
 	 }
+	 
 	 Node pivot = subTreeRoot.left;
+	 
+	 // Update parent pointers
 	 subTreeRoot.left = pivot.right;
+	 if (pivot.right != null) {
+		 pivot.right.parent = subTreeRoot;
+	 }
+	 
 	 pivot.right = subTreeRoot;
+	 pivot.parent = subTreeRoot.parent;
+	 subTreeRoot.parent = pivot;
+	 
 	 return pivot;
  }
 
- // Add handleRedBlack method (basic version for single insert)
+ /**
+  * Handles Red-Black tree balancing after insertion
+  * This method ensures Red-Black tree properties are maintained
+  */
  protected void handleRedBlack(Node node) {
-    if (node == root) {
-        node.nodeColourRed = false; // Root is always black
-        return;
-    }
-    if (node.parent == null || node.parent.parent == null) {
-        return; // Prevent NullPointerException for root or shallow nodes
-    }
-	// Red Uncle scenario and other balancing logic to be added here
-	// Define uncle node
-	Node uncle = null;
-	if (node.parent != null && node.parent.parent != null) {
-		if (node.parent == node.parent.parent.left) {
-			uncle = node.parent.parent.right;
-		} else {
-			uncle = node.parent.parent.left;
-		}
-	}
-	//Check if uncle is Black (four subcases to handle)
-	else if((uncle == null) || !uncle.nodeColourRed) {
-		//Left Left Case
-		if((node == node.parent.left) && (node.parent == node.parent.parent.left)) {
-			rotateSubTreeRight(node.parent.parent);
-			node.parent.nodeColourRed = false;
-			node.parent.right.nodeColourRed = true;
-		}
-		//Right Right Case
-		else if((node == node.parent.right) && (node.parent == node.parent.parent.right)) {
-			rotateSubTreeLeft(node.parent.parent);
-			node.parent.nodeColourRed = false;
-			node.parent.left.nodeColourRed = true;
-		}
-		//Left Right Case
-		else if((node == node.parent.right) && (node.parent == node.parent.parent.left)) {
-			rotateSubTreeLeft(node.parent);
-			rotateSubTreeRight(node.parent);
-			node.nodeColourRed = false;
-			node.left.nodeColourRed = true;
-			node.right.nodeColourRed = true;
-		}
-		//Right Left Case
-		else if((node == node.parent.left) && (node.parent == node.parent.parent.right)) {
-			rotateSubTreeRight(node.parent);
-			rotateSubTreeLeft(node.parent);
-			node.nodeColourRed = false;
-			node.left.nodeColourRed = true;
-			node.right.nodeColourRed = true;
-		}
-
-}
+     // Base case: if node is root, make it black
+     if (node == root) {
+         node.nodeColourRed = false;
+         return;
+     }
+     
+     // If parent is black, no violation
+     if (node.parent == null || !node.parent.nodeColourRed) {
+         return;
+     }
+     
+     // If we reach here, parent is red, so we have a violation
+     Node parent = node.parent;
+     Node grandparent = parent.parent;
+     
+     // If no grandparent, parent must be root (should be black)
+     if (grandparent == null) {
+         parent.nodeColourRed = false;
+         return;
+     }
+     
+     // Find uncle
+     Node uncle = (parent == grandparent.left) ? grandparent.right : grandparent.left;
+     
+     // Case 1: Uncle is red - recolor and recurse up
+     if (uncle != null && uncle.nodeColourRed) {
+         parent.nodeColourRed = false;
+         uncle.nodeColourRed = false;
+         grandparent.nodeColourRed = true;
+         handleRedBlack(grandparent);
+         return;
+     }
+     
+     // Case 2: Uncle is black (or null) - need rotations
+     // Left Left Case
+     if (parent == grandparent.left && node == parent.left) {
+         Node newRoot = rotateSubTreeRight(grandparent);
+         updateRoot(grandparent, newRoot);
+         newRoot.nodeColourRed = false;
+         newRoot.right.nodeColourRed = true;
+     }
+     // Right Right Case  
+     else if (parent == grandparent.right && node == parent.right) {
+         Node newRoot = rotateSubTreeLeft(grandparent);
+         updateRoot(grandparent, newRoot);
+         newRoot.nodeColourRed = false;
+         newRoot.left.nodeColourRed = true;
+     }
+     // Left Right Case
+     else if (parent == grandparent.left && node == parent.right) {
+         rotateSubTreeLeft(parent);
+         Node newRoot = rotateSubTreeRight(grandparent);
+         updateRoot(grandparent, newRoot);
+         newRoot.nodeColourRed = false;
+         newRoot.left.nodeColourRed = true;
+     }
+     // Right Left Case
+     else if (parent == grandparent.right && node == parent.left) {
+         rotateSubTreeRight(parent);
+         Node newRoot = rotateSubTreeLeft(grandparent);
+         updateRoot(grandparent, newRoot);
+         newRoot.nodeColourRed = false;
+         newRoot.right.nodeColourRed = true;
+     }
+ }
+ 
+ /**
+  * Updates the root reference and parent pointers after rotation
+  */
+ private void updateRoot(Node oldRoot, Node newRoot) {
+     if (oldRoot.parent == null) {
+         root = newRoot;
+         newRoot.parent = null;
+     } else {
+         if (oldRoot == oldRoot.parent.left) {
+             oldRoot.parent.left = newRoot;
+         } else {
+             oldRoot.parent.right = newRoot;
+         }
+         newRoot.parent = oldRoot.parent;
+     }
  }
 }
