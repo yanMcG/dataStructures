@@ -590,16 +590,21 @@ public class GraphPanel extends JComponent {
     		
     		DisplayNode currDisplayNode = new DisplayNode(p, 30, nodeColour, kind, (Integer)node.value);
     		node.refToDisplayNode = currDisplayNode;
-    		
-    		if(node.parent != null)
-    		{
- 
-    			DisplayNode parentDisplayNode = ((MyNode)node.parent).refToDisplayNode;
-    			Edge currEdge = new Edge(currDisplayNode, parentDisplayNode);
-    			edges.add(currEdge);
-    		}
-    		nodes.add(currDisplayNode);
-    	}
+			
+			// Add the display node first so parent refToDisplayNode may be available later
+			nodes.add(currDisplayNode);
+			
+			if (node.parent != null) {
+				MyNode parentNode = (MyNode) node.parent;
+				// Only create an edge if the parent's display node has already been created
+				if (parentNode.refToDisplayNode != null) {
+					Edge currEdge = new Edge(currDisplayNode, parentNode.refToDisplayNode);
+					edges.add(currEdge);
+				}
+			}
+			
+			// ...existing code...
+        }
         
     	/*@Override
     	public void inOrderTraversal()
@@ -608,6 +613,15 @@ public class GraphPanel extends JComponent {
     	}
     	
     	@Override
+        GitHub Copilot
+        Hi. How can I help with your code or this project?
+        
+        theres an issue withrpahpanel, after the 3rd inserted value, the tree disapears
+        
+        GitHub Copilot
+        I can see the issue in your GraphPanel.java file. Let me examine the code more closely to identify what's causing the tree to disappear after the 3rd insertion.
+        
+        
 		protected void recInOrderTraversal(Node subTreeRoot)
     	{
     		if(subTreeRoot == null) return;
