@@ -4,3 +4,4 @@ a binary search tree alogrithim that can handle violations and go through the ca
   case1: unlc ei s red --> recolour
   case2: left left so rotateSubTree right
   case3: right right which rotateSubTree left
+as well as a left-right and right-left rotation
