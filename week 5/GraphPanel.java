@@ -628,21 +628,19 @@ public class GraphPanel extends JComponent {
     		if ( myRoot == null ) {
     			myRoot = node;
     			
-    			//Remember that new nodes default to Red but
-    			//the root must always be black
-    			//node.nodeColourRed = false;
-    			//return;
+    			
+    			node.nodeColourRed = false;
+    			return;
     		}
     		else
     		{
 
-    			//Initially we start at the root. Each subsequent recursive call will be to a 
     			//left or right subtree.
     			super.insertRec(myRoot, node);
     		}
     		
     		super.root = myRoot;
-    		//Now that we've inserted we need to make it Red-Black (if necessary)
+    		//make it Red-Black (if necessary)
     		super.handleRedBlack(node);
     		myRoot = (BinarySearchTreeViewCapable<T>.MyNode)root;
  
@@ -653,6 +651,7 @@ public class GraphPanel extends JComponent {
         	
     	}
     	
+        //positions on the panel
     	public final class NodeConstants
     	{
     		public static final int X_OFFSET = 100;
@@ -685,15 +684,15 @@ public class GraphPanel extends JComponent {
 
         }
             
-            /*public class MyInteger extends Integer implements Comparable<Integer>
-            {
+            // public class MyInteger extends Integer implements Comparable<Integer>
+            // {
             
-                @Override
-                public int compareTo(java.lang.Integer arg0) {
-                    // TODO Auto-generated method stub
-                    return 0;
-                }
+            //     @Override
+            //     public int compareTo(java.lang.Integer arg0) {
+            //         // TODO Auto-generated method stub
+            //         return 0;
+            //     }
                 
-            }*/
+            // }
     }
 }
