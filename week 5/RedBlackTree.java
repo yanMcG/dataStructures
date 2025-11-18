@@ -344,9 +344,11 @@ public class RedBlackTree<T extends Comparable<T>> {
      
      // Case 1: Uncle is red - recolor and recurse up
      if (uncle != null && uncle.nodeColourRed) {
-         parent.nodeColourRed = false;
+         //make parent and uncle black, grandparent red
+		 parent.nodeColourRed = false;
          uncle.nodeColourRed = false;
          grandparent.nodeColourRed = true;
+		 // Recur on grandparent to check for further violations
          handleRedBlack(grandparent);
          return;
      }
@@ -354,21 +356,25 @@ public class RedBlackTree<T extends Comparable<T>> {
      // Case 2: Uncle is black (or null) - need rotations
      // Left Left Case
      if (parent == grandparent.left && node == parent.left) {
+		// Perform right rotation on grandparent
          Node newRoot = rotateSubTreeRight(grandparent);
-         updateRoot(grandparent, newRoot);
-         newRoot.nodeColourRed = false;
+		 updateRoot(grandparent, newRoot);
+		 newRoot.nodeColourRed = false;
          newRoot.right.nodeColourRed = true;
      }
      // Right Right Case  
      else if (parent == grandparent.right && node == parent.right) {
-         Node newRoot = rotateSubTreeLeft(grandparent);
+         // Perform left rotation on grandparent
+		 Node newRoot = rotateSubTreeLeft(grandparent);
          updateRoot(grandparent, newRoot);
          newRoot.nodeColourRed = false;
          newRoot.left.nodeColourRed = true;
      }
      // Left Right Case
      else if (parent == grandparent.left && node == parent.right) {
-         rotateSubTreeLeft(parent);
+         // First rotate left on parent
+		 rotateSubTreeLeft(parent);
+		 // Then rotate right on grandparent
          Node newRoot = rotateSubTreeRight(grandparent);
          updateRoot(grandparent, newRoot);
          newRoot.nodeColourRed = false;
@@ -376,7 +382,9 @@ public class RedBlackTree<T extends Comparable<T>> {
      }
      // Right Left Case
      else if (parent == grandparent.right && node == parent.left) {
-         rotateSubTreeRight(parent);
+         // First rotate right on parent
+		 rotateSubTreeRight(parent);
+		 // Then rotate left on grandparent
          Node newRoot = rotateSubTreeLeft(grandparent);
          updateRoot(grandparent, newRoot);
          newRoot.nodeColourRed = false;

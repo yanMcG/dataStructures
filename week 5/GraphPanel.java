@@ -561,14 +561,17 @@ public class GraphPanel extends JComponent {
           recInOrderTraversal(myRoot, depth);
         }
 
+        //Inorder traversal to process each node
     	private void recInOrderTraversal(MyNode subTreeRoot, int depth)
     	{
     		
     		if(subTreeRoot == null) return;
-    		
+    		//Traverse left subtree
     		recInOrderTraversal((MyNode)subTreeRoot.left, depth + 1);
-    		processNode(subTreeRoot, depth);
-    		recInOrderTraversal((MyNode)subTreeRoot.right, depth + 1);
+    		//Process the current node
+            processNode(subTreeRoot, depth);
+    		//Traverse right subtree 
+            recInOrderTraversal((MyNode)subTreeRoot.right, depth + 1);
     	}
    
     	/**
@@ -582,32 +585,37 @@ public class GraphPanel extends JComponent {
     	//@Override
     	private void processNode(MyNode node, int depth)
     	{
+            // Determine the colour of the node
     		Color nodeColour = (node.nodeColourRed) ? Color.red : Color.black;
-    		
     		node.xpos = totalNodes++;
     		node.ypos = depth;
+            // Calculate the display position
     		Point p = new Point(NodeConstants.X_OFFSET + node.xpos * NodeConstants.X_OFFSET, NodeConstants.Y_OFFSET + node.ypos * NodeConstants.Y_OFFSET);
     		
+            // Create the display node including the value/key
     		DisplayNode currDisplayNode = new DisplayNode(p, 30, nodeColour, kind, (Integer)node.value);
-    		node.refToDisplayNode = currDisplayNode;
-    		
-    		if(node.parent != null)
-    		{
- 
-    			DisplayNode parentDisplayNode = ((MyNode)node.parent).refToDisplayNode;
-    			Edge currEdge = new Edge(currDisplayNode, parentDisplayNode);
-    			edges.add(currEdge);
-    		}
-    		nodes.add(currDisplayNode);
-    	}
+    		// Link the tree node to its display node
+            node.refToDisplayNode = currDisplayNode;
+			
+			// Add the display node first so parent refToDisplayNode may be available later
+			nodes.add(currDisplayNode);
+			
+            // Now create the edge to the parent, if any
+			if (node.parent != null) {
+                // Get the parent node
+				MyNode parentNode = (MyNode) node.parent;
+				// Only create an edge if the parent's display node has already been created
+				if (parentNode.refToDisplayNode != null) {
+                    // Create the edge
+					Edge currEdge = new Edge(currDisplayNode, parentNode.refToDisplayNode);
+					// Add the edge to the list
+                    edges.add(currEdge);
+				}
+			}
+			
+        }
         
-    	/*@Override
-    	public void inOrderTraversal()
-    	{
-    		
-    	}
-    	
-    	@Override
+    	/* this section of code is not relevent as nodes are entered in order of insertion not inorder
 		protected void recInOrderTraversal(Node subTreeRoot)
     	{
     		if(subTreeRoot == null) return;
@@ -639,43 +647,53 @@ public class GraphPanel extends JComponent {
     			super.insertRec(myRoot, node);
     		}
     		
+            //After insertion we need to update the root reference in case it has changed
     		super.root = myRoot;
     		//make it Red-Black (if necessary)
     		super.handleRedBlack(node);
     		myRoot = (BinarySearchTreeViewCapable<T>.MyNode)root;
  
     		
-    		
+    		//Finally, we need to compute the node positions for display
         	myTree.computeNodePositions(); //finds x,y positions of the tree nodes
         	myTree.maxHeight=myTree.treeHeight(myTree.root); //finds tree height for scaling y axis     
         	
     	}
     	
+<<<<<<< HEAD
         //positions on the panel
+=======
+
+        //Constants for node positioning
+>>>>>>> fc77b505a0738809d8b02570237a574571cad1fc
     	public final class NodeConstants
     	{
+            //Offsets for drawing nodes
     		public static final int X_OFFSET = 100;
     		public static final int Y_OFFSET = 50;
     		
+            //Offsets for drawing node values
     		public static final int X_CHAROFFSET = 5;
     		public static final int Y_CHAROFFSET = 5;
    		
     	}
     	
-    	
+    	//Our own Node class which extends the RedBlackTree Node class
     	public class MyNode extends RedBlackTree<T>.Node
     	{
+            //x and y position of node
     		public int xpos;
     		public int ypos;
     		
+            //Reference to the DisplayNode for this tree node
     		public DisplayNode refToDisplayNode;
     		
-    		
+    		//Constructor
 			public MyNode(T value) {
 				super(value);
 			}
 			
-			
+			//Added for Debug purposes
 			@Override
 			public String toString()
 			{
