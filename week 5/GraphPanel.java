@@ -660,12 +660,6 @@ public class GraphPanel extends JComponent {
         	
     	}
     	
-<<<<<<< HEAD
-        //positions on the panel
-=======
-
-        //Constants for node positioning
->>>>>>> fc77b505a0738809d8b02570237a574571cad1fc
     	public final class NodeConstants
     	{
             //Offsets for drawing nodes
