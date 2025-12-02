@@ -1,9 +1,20 @@
 import java.util.Arrays;
+
+
 //This is a Min-Heap
 public class BinaryHeap<T extends Comparable<T>> implements PriorityQueue<T> {
  private static final int DEFAULT_CAPACITY = 10;
+
  protected T[] array;
+
+ //array representation of heap 
+ private int[] heap;
+
+ //number of elements in heap
  protected int size;
+
+ //capacity of heap max size
+ private int capacity;
 
  /**
  * Constructs a new BinaryHeap.
@@ -13,6 +24,13 @@ public BinaryHeap () {
  // Java doesn't allow construction of arrays of placeholder data types
  array = (T[])new Comparable[DEFAULT_CAPACITY];
  size = 0;
+ }
+
+ //constructor to initilize heap with given capacity
+ public BinaryHeap (int capacity){
+    this.capacity = capacity;
+    this.heap = new int[capacity];
+    this.size = 0;
  }
 
 
@@ -184,4 +202,115 @@ public BinaryHeap () {
  array[index1] = array[index2];
  array[index2] = tmp;
  }
+
+// edits in class 
+ private int parent(int i){
+    return (i - 1) / 2;
+ }
+
+ private int leftChild(int i)  {
+    return 2 * i + 1;
+ }
+
+ private rightChild(int i) {
+    return 2 * i + 2;
+ }
+
+
+ private void swap(int i, int j){
+    int temp = heap[i];
+    heap[i] = heap[j];
+    heap[j] = temp;
+ }
+
+ private void resize(){
+    capacity *= 2;
+
+    heap = Arrays.copyOf(heap, capacity);
+ 
+
+
+ public void insert(int value){
+    if(size >= capacity)
+{
+         resize();
+} 
+heap[size] = value;
+
+int current = size;
+size++;
+while(current > 0 && heap[current] < heap[parent(current)]){
+    swap(current, parent(current));
+    current = parent(current);
+}
+ }
+
+}
+
+//sorting down through the heap
+private void sortDown(int i){
+    //find smallest among node and children
+    int smallest = i;
+
+    //get left and right child indices
+    int left = leftChild(i);
+
+    //right child index
+    int right = rightChild(i);
+
+    //compare left child and node and if left child is smaller update smallest
+    if(left < size && heap[left] < heap[smallest]){
+        smallest = left;
+    }
+
+
+    if(right < size && heap[right] < heap[smallest]){
+        smallest = right;
+    }
+    if(smallest != i){
+        swap(i, smallest);
+        sortDown(smallest);
+    }
+}
+
+
+
+public int extractMin(){
+    if(size == 0){
+        throw new IllegalStateException("Heap is empty");
+    }
+
+    int min = heap[0];
+    heap[0] = heap[size - 1];
+    size--;
+    sortDown(0);
+    return min;
+}
+
+
+//state size of the heap
+public void printHeap(){
+    System.out.println(Arrays.toString(Arrays.copyOf(heap, size)));
+}
+
+//main method
+public static void main(String[] args){
+    BinaryHeap bh = new BinaryHeap(10);
+    bh.insert(10);
+    bh.insert(5);
+    bh.insert(30);
+    bh.insert(3);
+    bh.insert(8);
+
+    System.out.println("Heap after inserting elements:");
+    bh.printHeap();
+    System.out.println("Extracted min: " + bh.extractMin());
+    System.out.println("Heap after extracting min:");
+    bh.printHeap();
+
+}
+
+
+
+
 }
