@@ -122,7 +122,8 @@ class LRUCache {
 
     // Main method to test the LRU Cache implementation
     public static void main(String[] args) {
-        LRUCache lruCache = new LRUCache(3); // Cache capacity of 3
+        LRUCache lruCache = new LRUCache(20); // Cache capacity of 20
+        HashTableDivideAndConquer hm = new HashTableDivideAndConquer(20);
 
         // Insert items
         lruCache.put(1, 102345);
@@ -144,7 +145,7 @@ class LRUCache {
         System.out.println("Get 3: " + lruCache.get(3));
         lruCache.printCache();
 
-        
+
         // Insert another new key, which will evict key 2 (the LRU)
         lruCache.put(5, 103455);
         lruCache.printCache();
