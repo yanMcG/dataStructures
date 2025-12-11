@@ -96,8 +96,8 @@ public class BinaryHeap_DH4<T extends Comparable<T>> implements PriorityQueue<T>
     private void bubbleUp(){
         int index = size - 1;
        while(hasParent(index) && parent(index).compareTo(array[index]) > 0){
-           swap(index, getParentIndex(index));
-           index = getParentIndex(index);
+           swap(index, parentIndex(index));
+           index = parentIndex(index);
         }
     }
 
@@ -106,7 +106,7 @@ public class BinaryHeap_DH4<T extends Comparable<T>> implements PriorityQueue<T>
         int index = 0;
         
         while(hasLeftChild(index)){
-            
+
             int smallerChildIndex = LeftIndex(index);
             
             if(hasRightChild(index) && array[LeftIndex(index)].compareTo(leftChild(index)) < 0){
@@ -122,22 +122,9 @@ public class BinaryHeap_DH4<T extends Comparable<T>> implements PriorityQueue<T>
         }
     }
 
-
-    public T remove(){
-        if(this.isEmpty()){
-            throw new IllegalStateException("Heap is empty");
-        }
-
-        T result = peek();
-
-        array[0] = array[size - 1];
-        array[size - 1] = null;
-        size--;
-
-        bubbleDown();
-        return result;
+    private T leftChild(int i){
+        return array[LeftIndex(i)];
     }
-
     private boolean hasParent(int i){
         return i >= 0;
     }
@@ -162,7 +149,7 @@ public class BinaryHeap_DH4<T extends Comparable<T>> implements PriorityQueue<T>
         return 2 * i + 2;
     }
 
-    priavate T parent(int i){
+    private T parent(int i){
         return array[parentIndex(i)];
     }
 

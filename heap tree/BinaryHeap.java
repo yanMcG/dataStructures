@@ -182,7 +182,7 @@ public BinaryHeap () {
  }
 
 
- protected T parent(int i) {
+ protected T Parent(int i) {
  return array[parentIndex(i)];
  }
 
@@ -192,16 +192,9 @@ public BinaryHeap () {
  }
 
 
- protected T[] resize() {
- return Arrays.copyOf(array, array.length * 2);
- }
+ 
 
 
- protected void swap(int index1, int index2) {
- T tmp = array[index1];
- array[index1] = array[index2];
- array[index2] = tmp;
- }
 
 // edits in class 
  private int parent(int i){
@@ -253,7 +246,7 @@ private void sortDown(int i){
     int smallest = i;
 
     //get left and right child indices
-    int left = leftChild(i);
+    int left = LeftChild(i);
 
     //right child index
     int right = rightChild(i);
