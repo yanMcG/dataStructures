@@ -1,4 +1,9 @@
+package CA2;
+
 import java.util.Arrays;
+
+
+
 public class HashTableDivideAndConquer {
  private String[] table;
  private int capacity;
@@ -22,55 +27,70 @@ public class HashTableDivideAndConquer {
 
  // Insert a key into the hash table
  public void insert(String key) {
-    // Check load factor and resize if necessary
-     if (size >= capacity) {
-         resize();
-     }
-     // Find the next available slot using linear probing
-     int index = hash(key);
-     while (table[index] != null) {
-         index = (index + 1) % capacity;
-     }
-     // Insert the key
-     table[index] = key;
-     size++;
+        if (key == null) return;
+        // avoid duplicates
+        if (search(key)) return;
+        // Check load factor and resize if necessary
+        if (size >= capacity) {
+            resize();
+        }
+        // Find the next available slot using linear probing
+        int index = hash(key);
+        while (table[index] != null) {
+            index = (index + 1) % capacity;
+        }
+        // Insert the key
+        table[index] = key;
+        size++;
  }
-
-
 
 
 
  // Search for a key in the hash table
  public boolean search(String key) {
-     int index = hash(key);
-     // Linear probing to find the key
-     while (table[index] != null) {
-        // Key found then return true 
-         if (table[index].equals(key)) {
-             return true;
-         }
-         // Move to the next index because of collision 
-         index = (index + 1) % capacity;
-     }
-     return false;
+        if (key == null) return false;
+        int index = hash(key);
+        int start = index;
+        // Linear probing to find the key
+        while (table[index] != null) {
+            // Key found then return true
+            if (table[index].equals(key)) {
+                return true;
+            }
+            // Move to the next index because of collision
+            index = (index + 1) % capacity;
+            if (index == start) break; // full loop
+        }
+        return false;
  }
 
 
 
  // Delete a key from the hash table
  public void delete(String key) {
-     int index = hash(key);
-     // Linear probing to find the key
-     while (table[index] != null) {
-        //if key found then delete it and rehash the table
-         if (table[index].equals(key)) {
-             table[index] = null;
-             size--;
-             rehash();
-             return;
-         }
-         index = (index + 1) % capacity;
-     }
+        if (key == null) return;
+        int index = hash(key);
+        int start = index;
+        // Linear probing to find the key
+        while (table[index] != null) {
+            if (table[index].equals(key)) {
+                // remove the key
+                table[index] = null;
+                size--;
+                // reinsert the contiguous cluster after this slot
+                int next = (index + 1) % capacity;
+                while (table[next] != null) {
+                    String rekey = table[next];
+                    table[next] = null;
+                    size--;
+                    insert(rekey); // reinserts into proper slot
+                    next = (next + 1) % capacity;
+                }
+                return;
+            }
+            index = (index + 1) % capacity;
+            if (index == start) break; // full loop
+        }
  }
 
 
