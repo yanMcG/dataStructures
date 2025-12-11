@@ -68,46 +68,43 @@ public class HashTableDivideAndConquer {
 
  // Delete a key from the hash table
  public void delete(String key) {
-        if (key == null) return;
-        int index = hash(key);
-        int start = index;
-        // Linear probing to find the key
-        while (table[index] != null) {
-            if (table[index].equals(key)) {
-                // remove the key
-                table[index] = null;
-                size--;
-                // reinsert the contiguous cluster after this slot
-                int next = (index + 1) % capacity;
-                while (table[next] != null) {
-                    String rekey = table[next];
-                    table[next] = null;
-                    size--;
-                    insert(rekey); // reinserts into proper slot
-                    next = (next + 1) % capacity;
-                }
-                return;
-            }
-            index = (index + 1) % capacity;
-            if (index == start) break; // full loop
+     // Rehash remaining elements to fill gaps after a deletion (Divide and Conquer Approach)
+    if (key == null) return;
+    int index = hash(key);
+    int start = index;  
+    // Linear probing to find the key
+    while (table[index] != null) {
+        // Key found then delete
+        if (table[index].equals(key)) {
+            table[index] = null;
+            size--;
+            rehash();
+            return;
         }
+        // Move to the next index because of collision
+        index = (index + 1) % capacity;
+        if (index == start) break; // full loop
+    }
  }
 
 
 
  // Divide and Conquer Resize: Rehash the table by dividing the task into smaller chunks
  private void resize() {
-    //double the capacity
-     String[] oldTable = table;
-     capacity *= 2;
-     table = new String[capacity];
-     size = 0;
-     // Reinsert all existing keys
-     for (String key : oldTable) {
-         if (key != null) {
-             insert(key);
-         }
-     }
+    //if table exceeds LOAD_FACTOR  then resize
+    if ((float)size / capacity > 0.7) {
+        //double the capacity
+        String[] oldTable = table;
+        capacity *= 2;
+        table = new String[capacity];
+        size = 0;
+        // Reinsert all existing keys
+        for (String key : oldTable) {
+            if (key != null) {
+                insert(key);
+            }
+        }
+    }
  }
 
 
