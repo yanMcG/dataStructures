@@ -1,6 +1,6 @@
                                                         1. Hashing Fundamentals (5 Marks)
                                                     Define the following terms and concepts:
-*from dermots notes*
+***dermots videos***
 ---------------------------------------------------------
 
 
@@ -58,7 +58,9 @@ alternative slot instead of placing the key externally of the list.
 
 
 
-
+5. Briefly describe how Question 4 (LRU cache) can be updated to support concurrency.
+(5 Marks)
+Consider thread safety, locking mechanisms, and concurrent data structures.
 
 
 
