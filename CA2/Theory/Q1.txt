@@ -1,0 +1,54 @@
+                                                        1. Hashing Fundamentals (5 Marks)
+                                                    Define the following terms and concepts:
+*from dermots notes*
+---------------------------------------------------------
+
+
+1.1. Hash Function
+a hash function is a mapping technique that converts a key(string usually) to a value.
+so you associate a key with data, the key is what used to store it. this is benificial
+for organisation and finding.
+
+invoked the hashcode method, you can inherit it hwoever its not great, it carries out a 
+mathmatical operation of data. the input is the data, and output is a number whihc isan array index
+thanks to this you dont get too many collisions, still possible theoritically however
+---------------------------------------------------------
+
+
+1.2. Hash Table
+The hash table is what stores the key and value pair. in terms of performance
+it depends on the size of the array, its easy to find values however you can 
+have thousands of values and each of those values have a unique key/ID, 
+which can take up alot of storage.
+
+the keys override the equals and hashcode method. implements data as a pair.
+---------------------------------------------------------
+
+
+1.3. Collision in a hash table
+due to each value having a unique key identifier, Collisions are minimised when
+the data strcture is developed well as each key is unique, values can
+be the same, you can have matching values but each key/ID is unique
+
+how cllisions are normall solved,
+each array element is not a reference to the single piece of data,
+its actually like a linked list. its actually te head of a linked list.
+so if you do get a collision you dynamically add a element to the linked list.
+---------------------------------------------------------
+
+
+1.4. Load Factor
+iteration is not as fast when it comes to hash tables, its onyl fast with insetion and removal.
+hash maps, developed well are faster than tree maps. theres no control over the order that the elementa are stored in
+with the way the structure inters the elements. how it iterates is from top to bottom.
+
+
+Definition: the load factor α = n / m, where n = number of stored entries and m = number of buckets (table capacity).
+---------------------------------------------------------
+
+
+1.5. Open addressing
+for open addressing in relation to hash maps, its a collision resolution technique where basically all inputs are 
+directyl stored in the tabe array, so when a key is put in a occupied slot, a sequence is used to find an
+alternative slot instead of placing the key externally of the list.
+---------------------------------------------------------
