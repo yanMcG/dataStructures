@@ -52,3 +52,59 @@ for open addressing in relation to hash maps, its a collision resolution techniq
 directyl stored in the tabe array, so when a key is put in a occupied slot, a sequence is used to find an
 alternative slot instead of placing the key externally of the list.
 ---------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------------------------
+
+                                            2. Compare Hashing with Tree-based Structures: (5 Marks)
+
+2.1. Discuss how hash-based data structures (like hash tables) differ from tree-based data
+structures (like red-black trees or AVL trees).
+
+
+        so the difference i suppose comes down to how well the hash table is structurd, as a badly designed hashmap can be 
+        outperformec by a tree map in terms of speed, but in most cases a hash map is really fast at processes of adding and removing.
+        iteration within a hashmap compared to trees performance is more poor however.  
+
+        One of the biggist differences beween these two types is that trees have a organised/ordered storage unlike hashmaps.
+        so in terms of speed of processes trees have a garunteed O(log n) unlike hashmaps where their performance may be better on average
+        but worst case scenario O(n) meaning the hash maps are less predictable.
+
+
+
+------------------------------------------------------------------------------------------------------------------
+2.2. What are the advantages and disadvantages of each in terms of time complexity for
+operations such as insert, delete, and search?
+
+        tree-based structures:
+            Advantages
+            Tree-based can be far more predictable compared to hash maps
+            Maintains sorted order for efficient rangefinding, predecessor/successos and iteration.
+
+            Disadvantages
+            Higher memory cost per element
+            has slightly worse cache when compared to a well designed hash map structure 
+
+        Hash Maps:
+
+        Advantages
+            Very fast average-case lookups and updates.
+            Low per‑operation cost; good cache locality (especially open addressing).
+
+        Disadvantages
+            No ordering cannot do range queries or ordered iteration as fast as trees.
+            deletions can be tricky for open addressing.
+            order of insertions does not matter.
+------------------------------------------------------------------------------------------------------------------
