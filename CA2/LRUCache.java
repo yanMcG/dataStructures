@@ -122,8 +122,17 @@ class LRUCache {
 
     // Main method to test the LRU Cache implementation
     public static void main(String[] args) {
+
+
+
+
         LRUCache lruCache = new LRUCache(20); // Cache capacity of 20
+
+
+        //hash table acting as a cache with LRU strategy
         HashTableDivideAndConquer hm = new HashTableDivideAndConquer(20);
+
+
 
         // Insert items
         lruCache.put(1, 102345);

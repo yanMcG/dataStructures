@@ -3,6 +3,9 @@
 // If you are confused by doubly linked lists draw out three boxes and using different coloured pens
 // point to the one that you are referring to at any time. That way you will see what is prev, next, current and so on.
 // This is most helpful when you see lines such as the following:  current.prev.next = temp;
+
+package CA2;
+
 class node {
     node prev;
     String data;

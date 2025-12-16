@@ -59,13 +59,6 @@ alternative slot instead of placing the key externally of the list.
 
 
 
-
-
-
-
-
-
-
 ------------------------------------------------------------------------------------------------------------------
 
                                             2. Compare Hashing with Tree-based Structures: (5 Marks)
