@@ -58,9 +58,7 @@ alternative slot instead of placing the key externally of the list.
 
 
 
-5. Briefly describe how Question 4 (LRU cache) can be updated to support concurrency.
-(5 Marks)
-Consider thread safety, locking mechanisms, and concurrent data structures.
+
 
 
 
@@ -110,3 +108,40 @@ operations such as insert, delete, and search?
             deletions can be tricky for open addressing.
             order of insertions does not matter.
 ------------------------------------------------------------------------------------------------------------------
+
+5. Briefly describe how Question 4 (LRU cache) can be updated to support concurrency.
+(5 Marks)
+Consider thread safety, locking mechanisms, and concurrent data structures.
+
+
+thread safety:
+    make sure each get/put operation is atomic 
+    gets muust return correct value and access order without races
+    a put must replace automatically the least recentyl used value in the cache
+    i could implement a lock free and wait free desing into the data strucutre. 
+
+
+locking mechnasims:
+    implement:
+        coarse grained locking:
+            lock the enitre data strucutre
+            simple to implement
+            low parallelsim as only 1 thread can access data at a time
+
+        fine grained locking:
+            multiple locks
+            has better performance
+            hardert o implement and risks deadlocks
+
+
+data structures:
+
+    implementing a concurrent deign comes with soem flaws. desing issues to be considered are:
+        coreectness
+        granulairty of locks
+        deadlockk avoidance
+        lock fee and wait free desing
+        memory consistency
+        memory reclamation
+        fairness and starvation
+        scaalibility
